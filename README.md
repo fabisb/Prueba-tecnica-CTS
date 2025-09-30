@@ -123,9 +123,9 @@ GET /api/users/verify-email/<token>/ →
 ```json
 {"message":"Token válido. Ingresa tu nueva contraseña."}
 ```
-```json
 POST /api/users/verify-email/<token>/ → 
-{"password":"nuevaClave"} → {"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}
+```json
+{"password":"nuevaClave"} {"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}
 ```
 Admin login/logout/session
 POST /api/users/admin/login/ → 
@@ -141,10 +141,8 @@ GET /api/users/admin/session/ →
 {"is_authenticated":true,"username":"admin"}
 ```
 Participantes (admin)
-GET /api/users/admin/participants/?is_verified=true → 
-```json
-lista de participantes con id, first_name, last_name, email, is_verified
-```
+GET /api/users/admin/participants/?is_verified=true → lista de participantes con id, first_name, last_name, email, is_verified
+
 Ganador (admin)
 
 POST /api/users/admin/participants/draw_winner/ → 
