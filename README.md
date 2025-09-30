@@ -58,7 +58,9 @@ python manage.py migrate
 - Contraseñas encriptadas, rutas protegidas para admin y token único de verificación
 - En Windows, Celery usa `--pool=solo` para evitar errores de multiprocessing
 
-## Configuración SMTP Gmail
+## ✉ Configuración SMTP Gmail
+
+Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables:
 
 - EMAIL_HOST=smtp.gmail.com
 - EMAIL_PORT=587
@@ -67,6 +69,9 @@ python manage.py migrate
 - EMAIL_HOST_PASSWORD=tu_app_password
 - DEFAULT_FROM_EMAIL=tu_correo@gmail.com
 - FRONTEND_URL=http://localhost:5173
+
+> Reemplaza `tu_correo@gmail.com` y `tu_app_password` por tu correo real y la App Password de Gmail.  
+> Asegúrate de que tu backend lea estas variables desde `.env` usando `django-environ` o la configuración de tu `settings.py`.
 
 ## Nota
 
