@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.decorators import action
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .models import Participant
+from .models import Participant, Winner
 from .serializer import ParticipantSerializer, PasswordSerializer
 import random
 from .tasks import send_winner_email
@@ -53,8 +53,8 @@ class ParticipantAdminViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ParticipantSerializer
     lookup_field = 'id'
 
-    authentication_classes = [TokenAuthentication]  # <<< aquí
-    permission_classes = [IsAdminUser]              # <<< aquí
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -69,14 +69,40 @@ class ParticipantAdminViewSet(viewsets.ReadOnlyModelViewSet):
         if not verified.exists():
             return Response({'error': 'No hay participantes verificados'}, status=status.HTTP_400_BAD_REQUEST)
         winner = random.choice(list(verified))
+
+        # Enviar correo y guardar ganador
+        Winner.objects.create(participant=winner)
         send_winner_email.delay(
             winner.email, winner.first_name, winner.last_name)
+
         return Response({
             'winner': {
                 'id': winner.id,
                 'first_name': winner.first_name,
                 'last_name': winner.last_name,
                 'email': winner.email
+            }
+        })
+
+
+class LastWinnerView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        last_winner = Winner.objects.select_related(
+            'participant').order_by('-date_won').first()
+        if not last_winner:
+            return Response({'winner': None})
+
+        p = last_winner.participant
+        return Response({
+            'winner': {
+                'id': p.id,
+                'first_name': p.first_name,
+                'last_name': p.last_name,
+                'email': p.email,
+                'date_won': last_winner.date_won
             }
         })
 

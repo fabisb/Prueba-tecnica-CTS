@@ -12,21 +12,25 @@
                     class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded transition cursor-pointer">
                     Generar ganador
                 </button>
-                <!-- Filtro por verificado -->
                 <select v-model="filterVerified" @change="applyFilters" class="border rounded px-3 py-2">
                     <option value="">Todos</option>
                     <option value="true">Verificados</option>
                     <option value="false">No verificados</option>
                 </select>
 
-                <!-- Búsqueda -->
                 <input v-model="searchQuery" @input="applyFilters" placeholder="Buscar por nombre o email"
                     class="border rounded px-3 py-2 flex-1" />
             </div>
 
-            <div v-if="winner" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded shadow-md">
-                <h2 class="font-bold text-xl mb-1">🎉 Ganador:</h2>
-                <p class="text-gray-800 text-lg">{{ winner.first_name }} {{ winner.last_name }} — {{ winner.email }}</p>
+            <div v-if="lastWinner" class="bg-pink-100 border-l-4 border-pink-500 p-4 mb-6 rounded">
+                <h2 class="font-bold text-lg mb-1">Último ganador:</h2>
+                <p>{{ lastWinner.first_name }} {{ lastWinner.last_name }} — {{ lastWinner.email }}</p>
+                <p class="text-sm text-gray-600">Fecha: {{ new Date(lastWinner.date_won).toLocaleString() }}</p>
+            </div>
+
+            <div v-if="winner" class="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 rounded">
+                <h2 class="font-bold text-lg mb-1">Ganador actual:</h2>
+                <p>{{ winner.first_name }} {{ winner.last_name }} — {{ winner.email }}</p>
             </div>
 
             <table v-if="participants.length" class="w-full table-auto border-collapse">
@@ -38,8 +42,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="p in participants" :key="p.id"
-                        :class="['transition', index % 2 === 0 ? 'bg-gray-50' : 'bg-white', 'hover:bg-gray-100']">
+                    <tr v-for="p in participants" :key="p.id" class="hover:bg-gray-100 transition">
                         <td class="py-2 px-4 border">{{ p.first_name }} {{ p.last_name }}</td>
                         <td class="py-2 px-4 border">{{ p.email }}</td>
                         <td class="py-2 px-4 border">
@@ -50,13 +53,12 @@
                         </td>
                     </tr>
                 </tbody>
-
             </table>
-
             <p v-else class="text-gray-500 mt-4">No hay concursantes aún.</p>
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
@@ -64,26 +66,15 @@ import { useRouter } from 'vue-router'
 
 const participants = ref([])        // lista filtrada que se muestra en la tabla
 const participantsRaw = ref([])     // lista completa sin filtrar
-const winner = ref(null)
-const router = useRouter()
 
 const filterVerified = ref('')
 const searchQuery = ref('')
 
-// Traer participantes del backend
-const fetchParticipants = async () => {
-    try {
-        const res = await axios.get('http://localhost:8000/api/users/admin/participants/')
-        participantsRaw.value = res.data
-        applyFilters()
-    } catch (err) {
-        console.error(err)
-        if (err.response?.status === 401) {
-            alert('No autorizado. Por favor, inicia sesión nuevamente.')
-            router.push('/admin/login')
-        }
-    }
-}
+const winner = ref(null)
+const lastWinner = ref(null)
+const router = useRouter()
+const token = localStorage.getItem('adminToken')
+if (token) axios.defaults.headers.common['Authorization'] = `Token ${token}`
 
 const applyFilters = () => {
     let filtered = [...participantsRaw.value]
@@ -103,16 +94,40 @@ const applyFilters = () => {
     participants.value = filtered
 }
 
-// Generar ganador
-const drawWinner = async () => {
+const fetchParticipants = async () => {
     try {
-        const res = await axios.post('http://localhost:8000/api/users/admin/participants/draw_winner/')
-        winner.value = res.data.winner
+        const res = await axios.get('http://localhost:8000/api/users/admin/participants/')
+        participantsRaw.value = res.data
+        applyFilters()
+    } catch (err) {
+        console.error(err)
+        if (err.response?.status === 401) {
+            alert('No autorizado. Por favor, inicia sesión nuevamente.')
+            router.push('/admin/login')
+        }
+    }
+}
+
+const fetchLastWinner = async () => {
+    try {
+        const res = await axios.get('http://localhost:8000/api/users/admin/last-winner/')
+        lastWinner.value = res.data.winner
     } catch (err) {
         console.error(err)
     }
 }
 
-// Inicialmente traemos participantes
+const drawWinner = async () => {
+    try {
+        const res = await axios.post('http://localhost:8000/api/users/admin/participants/draw_winner/')
+        winner.value = res.data.winner
+        fetchLastWinner()
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+// Initial fetch
 fetchParticipants()
+fetchLastWinner()
 </script>

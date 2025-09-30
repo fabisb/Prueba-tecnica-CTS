@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'celery',
     'users',
-    'draw',
 ]
 
 MIDDLEWARE = [

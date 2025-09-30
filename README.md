@@ -50,21 +50,6 @@ python manage.py migrate
 6. Selección de ganador aleatorio por admin
 7. Notificación automática al ganador vía email
 
-## Endpoints principales
-
-**Registro participante:** `POST /api/participants/registrar/`  
-Request: `{"first_name":"Juan","last_name":"Pérez","email":"juan@example.com","phone":"1234567890","password":"contraseña123"}`  
-Response: `{"message":"¡Gracias por registrarte! Revisa tu correo para verificar tu cuenta."}`
-
-**Verificación de correo:** `GET /api/participants/verify-email/<token>/`  
-Response: `{"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}`
-
-**Listado participantes (admin):** `GET /api/participants/admin/participants/?is_verified=true`  
-Response: `[{"id":1,"first_name":"Juan","last_name":"Pérez","email":"juan@example.com","is_verified":true}]`
-
-**Seleccionar ganador (admin):** `POST /api/participants/admin/participants/draw_winner/`  
-Response: `{"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com"}}`
-
 ## Decisiones técnicas
 
 - Celery + Redis para envío asíncrono de correos
@@ -73,12 +58,17 @@ Response: `{"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"an
 - Contraseñas encriptadas, rutas protegidas para admin y token único de verificación
 - En Windows, Celery usa `--pool=solo` para evitar errores de multiprocessing
 
-## Formato para SMTP de Gmail
+## Configuración SMTP Gmail
 
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=tu_correo@gmail.com
-EMAIL_HOST_PASSWORD=tu_app_password
-DEFAULT_FROM_EMAIL=tu_correo@gmail.com
-FRONTEND_URL=http://localhost:5173
+- EMAIL_HOST=smtp.gmail.com
+- EMAIL_PORT=587
+- EMAIL_USE_TLS=True
+- EMAIL_HOST_USER=tu_correo@gmail.com
+- EMAIL_HOST_PASSWORD=tu_app_password
+- DEFAULT_FROM_EMAIL=tu_correo@gmail.com
+- FRONTEND_URL=http://localhost:5173
+
+## Nota
+
+Este proyecto está pensado para desarrollo local.
+Para producción, configurar HTTPS y dominios confiables (CSRF_TRUSTED_ORIGINS y CORS_ALLOWED_ORIGINS).

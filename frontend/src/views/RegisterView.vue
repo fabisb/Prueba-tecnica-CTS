@@ -1,21 +1,27 @@
 <template>
-    <div class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-        <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Registro al sorteo</h1>
+    <div class="min-h-screen bg-pink-50 flex items-center justify-center p-6">
+        <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md border-2 border-pink-300">
+            <h1 class="text-3xl font-bold text-pink-700 mb-6 text-center">
+                ¡Sorteo de San Valentín!
+            </h1>
+
+            <p class="text-center text-gray-700 mb-6">
+                Regístrate para participar y gana una estadía romántica de 2 noches todo pagado en un hotel.
+            </p>
 
             <form @submit.prevent="register" class="flex flex-col gap-4">
                 <input v-model="first_name" placeholder="Nombre" required
-                    class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="border border-pink-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
                 <input v-model="last_name" placeholder="Apellido" required
-                    class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                <input v-model="email" type="email" placeholder="Correo" required
-                    class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="border border-pink-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+                <input v-model="email" type="email" placeholder="Correo electrónico" required
+                    class="border border-pink-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
                 <input v-model="phone" placeholder="Teléfono" required
-                    class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="border border-pink-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
 
                 <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded transition cursor-pointer">
-                    Registrarse
+                    class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded transition cursor-pointer">
+                    ¡Participar ahora!
                 </button>
             </form>
 
@@ -28,7 +34,6 @@
         </div>
     </div>
 </template>
-
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
