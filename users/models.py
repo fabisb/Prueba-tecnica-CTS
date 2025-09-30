@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
-
+# Modelo personalizado de usuario
 class Participant(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=True)
@@ -18,6 +18,7 @@ class Participant(AbstractUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name} <{self.email}>"
 
+# Modelo para registrar el último ganador
 class Winner(models.Model):
     participant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_won = models.DateTimeField(auto_now_add=True)

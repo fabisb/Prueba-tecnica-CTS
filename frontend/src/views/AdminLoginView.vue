@@ -18,7 +18,7 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded transition">
+                    class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded transition cursor-pointer">
                     Ingresar
                 </button>
             </form>

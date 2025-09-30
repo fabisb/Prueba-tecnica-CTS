@@ -28,7 +28,7 @@ class RegisterParticipantView(generics.CreateAPIView):
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
 
-
+# View para verificar el token y activar la cuenta
 class VerifyEmailView(APIView):
     def get(self, request, token):
         participant = get_object_or_404(Participant, verification_token=token)
@@ -45,9 +45,8 @@ class VerifyEmailView(APIView):
         participant.save()
 
         return Response({'message': 'Tu cuenta ha sido activada. Ya estás participando en el sorteo.'})
-# Admin viewset for listing participants and drawing winner
 
-
+# View para que el admin pueda ver y gestionar participantes
 class ParticipantAdminViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Participant.objects.all().order_by('-date_joined')
     serializer_class = ParticipantSerializer
@@ -84,7 +83,7 @@ class ParticipantAdminViewSet(viewsets.ReadOnlyModelViewSet):
             }
         })
 
-
+# View para que el admin pueda ver el último ganador
 class LastWinnerView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser]
@@ -106,9 +105,7 @@ class LastWinnerView(APIView):
             }
         })
 
-# Admin login, logout, and session check views
-
-
+# Admin login, logout, y session check views
 class AdminLoginView(APIView):
     authentication_classes = []
     permission_classes = []

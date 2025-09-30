@@ -127,7 +127,6 @@ const drawWinner = async () => {
     }
 }
 
-// Initial fetch
 fetchParticipants()
 fetchLastWinner()
 </script>
