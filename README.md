@@ -49,14 +49,14 @@ FRONTEND_URL=http://localhost:5173
 
 - Django: `python manage.py runserver`
 - Celery (Windows): `celery -A cts_turismo_backend worker --loglevel=info --pool=solo` (Salir de la terminar y crear otra en caso de que no cargue)
+> En Linux/macOS no es necesario `--pool=solo`.
 - Frontend: `cd frontend && npm install && npm run dev`
 
 7. Crear superusuario (admin)
    python manage.py createsuperuser
 
-# Ingresa email, nombre de usuario y contraseña. Este será el administrador del concurso.
+>Ingresa email, nombre de usuario y contraseña. Este será el administrador del concurso.
 
-> En Linux/macOS no es necesario `--pool=solo`.
 
 ## Flujo del concurso
 
