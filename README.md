@@ -52,17 +52,17 @@ python manage.py migrate
 
 ## Endpoints principales
 
-**Registro participante:** `POST /api/users/registrar/`  
+**Registro participante:** `POST /api/participants/registrar/`  
 Request: `{"first_name":"Juan","last_name":"Pérez","email":"juan@example.com","phone":"1234567890","password":"contraseña123"}`  
 Response: `{"message":"¡Gracias por registrarte! Revisa tu correo para verificar tu cuenta."}`
 
-**Verificación de correo:** `GET /api/users/verify-email/<token>/`  
+**Verificación de correo:** `GET /api/participants/verify-email/<token>/`  
 Response: `{"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}`
 
-**Listado participantes (admin):** `GET /api/users/admin/participants/?is_verified=true`  
+**Listado participantes (admin):** `GET /api/participants/admin/participants/?is_verified=true`  
 Response: `[{"id":1,"first_name":"Juan","last_name":"Pérez","email":"juan@example.com","is_verified":true}]`
 
-**Seleccionar ganador (admin):** `POST /api/users/admin/participants/draw_winner/`  
+**Seleccionar ganador (admin):** `POST /api/participants/admin/participants/draw_winner/`  
 Response: `{"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com"}}`
 
 ## Decisiones técnicas

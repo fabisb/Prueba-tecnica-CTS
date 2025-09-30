@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'celery',
     'users',
@@ -61,6 +62,14 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vue Port
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # True en producción con HTTPS
+CSRF_COOKIE_SECURE = False  # True en producción con HTTPS
+CSRF_COOKIE_HTTPONLY = False  # Necesario para que JS pueda leer la cookie CSRF
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]  # Frontend URL
 
 ROOT_URLCONF = 'cts_turismo_backend.urls'
 
