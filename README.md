@@ -112,31 +112,31 @@ FRONTEND_URL=http://localhost:5173
   "last_name": "Pérez",
   "email": "juan@example.com",
   "phone": "1234567890"
-}
+}```
 
 Response:
 
-{"message":"¡Gracias por registrarte! Revisa tu correo para verificar tu cuenta."}
+```{"message":"¡Gracias por registrarte! Revisa tu correo para verificar tu cuenta."}```
 
 Verificación de correo
 
-GET /api/users/verify-email/<token>/ → {"message":"Token válido. Ingresa tu nueva contraseña."}
-POST /api/users/verify-email/<token>/ → {"password":"nuevaClave"} → {"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}
+```GET /api/users/verify-email/<token>/ → {"message":"Token válido. Ingresa tu nueva contraseña."}```
+```POST /api/users/verify-email/<token>/ → {"password":"nuevaClave"} → {"message":"Tu cuenta ha sido activada. Ya estás participando en el sorteo."}```
 
 Admin login/logout/session
 
-POST /api/users/admin/login/ → {"token":"<token>"}
+```POST /api/users/admin/login/ → {"token":"<token>"}
 POST /api/users/admin/logout/ → {"message":"Logout exitoso"}
-GET /api/users/admin/session/ → {"is_authenticated":true,"username":"admin"}
+GET /api/users/admin/session/ → {"is_authenticated":true,"username":"admin"}```
 
 Participantes (admin)
 
-GET /api/users/admin/participants/?is_verified=true → lista de participantes con id, first_name, last_name, email, is_verified
+```GET /api/users/admin/participants/?is_verified=true → lista de participantes con id, first_name, last_name, email, is_verified```
 
 Ganador (admin)
 
-POST /api/users/admin/participants/draw_winner/ → {"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com"}}
-GET /api/users/admin/last-winner/ → {"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com","date_won":"2025-09-30T20:15:00Z"}}
+```POST /api/users/admin/participants/draw_winner/ → {"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com"}}
+GET /api/users/admin/last-winner/ → {"winner":{"id":3,"first_name":"Ana","last_name":"Gómez","email":"ana@example.com","date_won":"2025-09-30T20:15:00Z"}}```
 
 ## Nota
 
