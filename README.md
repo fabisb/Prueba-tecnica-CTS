@@ -39,7 +39,7 @@ FRONTEND_URL=http://localhost:5173
 > Reemplaza `tu_correo@gmail.com` y `tu_app_password` por tu correo real y la App Password de Gmail.  
 > Asegúrate de que tu backend lea estas variables desde `.env` usando `django-environ` o la configuración de tu `settings.py`.
 
-4. Levantar Redis (Docker)
+4. Levantar Redis (Docker para facilitar compatibilidad con Windows)
    docker run -d --name redis -p 6379:6379 redis:7
 
 5. Migrar base de datos
