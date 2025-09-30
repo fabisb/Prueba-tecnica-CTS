@@ -1,27 +1,32 @@
 from rest_framework import serializers
 from .models import Participant
+from .tasks import send_verification_email
 
 
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'email', 'phone', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self, data):
+    def create(self, validated_data):
+        # Crear usuario con email como username
         participant = Participant(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            email=data['email'],
-            username=data['email'],
-            phone=data.get('phone', '')
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            email=validated_data['email'],
+            username=validated_data['email'],
+            phone=validated_data.get('phone', '')
         )
-        participant.set_password(data['password'])
+        participant.set_password(validated_data['password'])
         participant.save()
 
+        print("🚀 ~ file: users/serializer.py:20 ~ ParticipantSerializer ~ create ~ participant:", participant)
         # Enviar correo de verificación de manera asíncrona
-        from .tasks import send_verification_email
         send_verification_email.delay(
-            str(participant.email), str(participant.verification_token))
+            str(participant.email), str(participant.verification_token)
+        )
+        #send_verification_email.apply(args=[str(participant.email), str(participant.verification_token)])
+
 
         return participant

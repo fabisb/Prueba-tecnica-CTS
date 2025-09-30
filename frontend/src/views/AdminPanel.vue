@@ -35,7 +35,8 @@ const winner = ref(null)
 
 const fetchParticipants = async () => {
     try {
-        const res = await axios.get('http://localhost:8000/admin/participants/')
+        const res = await axios.get('http://localhost:8000/api/users/admin/participants/')
+        console.log("🚀 ~ fetchParticipants ~ res:", res.data)
         participants.value = res.data
     } catch (err) {
         console.error(err)
@@ -44,7 +45,7 @@ const fetchParticipants = async () => {
 
 const drawWinner = async () => {
     try {
-        const res = await axios.post('http://localhost:8000/admin/participants/draw_winner/')
+        const res = await axios.post('http://localhost:8000/api/users/admin/participants/draw_winner/')
         winner.value = res.data.winner
     } catch (err) {
         console.error(err)

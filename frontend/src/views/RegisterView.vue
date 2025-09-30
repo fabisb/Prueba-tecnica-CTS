@@ -26,13 +26,14 @@ const message = ref('')
 
 const register = async () => {
     try {
-        await axios.post('http://localhost:8000/registrar/', {
+        const res = await axios.post('http://localhost:8000/api/users/registrar/', {
             first_name: first_name.value,
             last_name: last_name.value,
             email: email.value,
             phone: phone.value,
             password: password.value
         })
+        console.log("🚀 ~ register ~ res:", res)
         message.value = '¡Gracias por registrarte! Revisa tu correo para verificar tu cuenta.'
     } catch (err) {
         message.value = err.response?.data?.email || err.response?.data?.detail || 'Error al registrar'
